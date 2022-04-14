@@ -1,8 +1,20 @@
 
-console.log(d3.select("svg").selectAll("circle").size());
-d3.csv("https://raw.githubusercontent.com/nivan/testPython/main/ListaParlamentarEmExercicio.csv").then(function (data) {
-    console.log(data);
+var array = []
+d3.csv("ListaParlamentar.csv", function (row) {
+    //console.log(row)
+    if (row["ListaParlamentarEmExercicio.Parlamentares.Parlamentar.IdentificacaoParlamentar.UrlFotoParlamentar"] != "") {
+        if (!array.some(e => e.picture === row["ListaParlamentarEmExercicio.Parlamentares.Parlamentar.IdentificacaoParlamentar.UrlFotoParlamentar"])) {
+            array.push({
+                picture: row["ListaParlamentarEmExercicio.Parlamentares.Parlamentar.IdentificacaoParlamentar.UrlFotoParlamentar"],
+                name: row["ListaParlamentarEmExercicio.Parlamentares.Parlamentar.IdentificacaoParlamentar.NomeParlamentar"],
+                party: row["ListaParlamentarEmExercicio.Parlamentares.Parlamentar.IdentificacaoParlamentar.SiglaPartidoParlamentar"]
+            });
+        }
+    }
 })
+
+console.log(array);
+
 d3.select("svg")
     .selectAll("circle")
     .on("mouseover", function (d) {
