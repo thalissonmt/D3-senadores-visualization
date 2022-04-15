@@ -8,12 +8,13 @@ d3.csv("ListaParlamentar.csv", function (row) {
                 name: row["ListaParlamentarEmExercicio.Parlamentares.Parlamentar.IdentificacaoParlamentar.NomeParlamentar"],
                 party: row["ListaParlamentarEmExercicio.Parlamentares.Parlamentar.IdentificacaoParlamentar.SiglaPartidoParlamentar"],
                 id: row["ListaParlamentarEmExercicio.Parlamentares.Parlamentar.IdentificacaoParlamentar.CodigoParlamentar"],
+                visited: false
             });
         }
     }
 })
 
-console.log(array);
+
 d3.select("svg")
     .selectAll("circle")
     .on("mouseover", function (d) {
@@ -26,6 +27,25 @@ d3.select("svg")
         console.log("click event")
     })
 
+
+
 d3.select("svg").select("g").selectAll("g").each(function () {
-    console.log(d3.select(this).attr("id"));
+
+    const partyID = d3.select(this).attr("id");
+    console.log(partyID);
+    var index = 0;
+    d3.select(this).selectAll("circle").each(function () {
+        console.log(array.keys);
+        // array[index].visited = true;
+        // index += 1;
+        for (element in array) {
+            console.log(element.party, element.visited, "entrei no for");
+            if (partyID.includes(element.party) && element.visited == false) {
+                console.log("entrou no if");
+                d3.select(this).attr("id", element.id);
+                element.visited = true;
+            }
+        }
+    });
 });
+
