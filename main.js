@@ -12,7 +12,23 @@ d3.csv("ListaParlamentar.csv", function (row) {
             });
         }
     }
-})
+}).then(function (d){
+    d3.select("svg").select("g").selectAll("g").each(function () {
+
+        const partyID = d3.select(this).attr("id").split("_")[1];
+
+        d3.select(this).selectAll("circle").each(function () {
+            var flag = false;
+            array.forEach(element => {
+                if (partyID == element.party && element.visited == false && flag == false) {
+                    d3.select(this).attr("id", element.id);
+                    element.visited = true;
+                    flag = true;
+                }
+            });
+        });
+    });
+});
 
 
 d3.select("svg")
@@ -24,28 +40,12 @@ d3.select("svg")
         d3.select(this).attr("stroke-width", 0);
     })
     .on("click", function () {
-        console.log("click event")
-    })
-
-
-
-d3.select("svg").select("g").selectAll("g").each(function () {
-
-    const partyID = d3.select(this).attr("id");
-    console.log(partyID);
-    var index = 0;
-    d3.select(this).selectAll("circle").each(function () {
-        console.log(array.keys);
-        // array[index].visited = true;
-        // index += 1;
-        for (element in array) {
-            console.log(element.party, element.visited, "entrei no for");
-            if (partyID.includes(element.party) && element.visited == false) {
-                console.log("entrou no if");
-                d3.select(this).attr("id", element.id);
-                element.visited = true;
+        var id = d3.select(this).attr("id");
+        array.forEach(element => {
+            if (element.id == id) {
+                d3.select("div").select("img").attr("src", element.picture);
+                d3.select("div").select("div").select("h4").text(element.name);
+                d3.select("div").select("div").select("p").text(element.party);
             }
-        }
-    });
-});
-
+        });
+    })
