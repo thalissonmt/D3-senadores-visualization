@@ -26,4 +26,6 @@ d3.select("svg")
         console.log("click event")
     })
 
-console.log(d3.select("svg").selectAll("g"))
+d3.select("svg").select("g").selectAll("g").each(function () {
+    console.log(d3.select(this).attr("id"));
+});
